@@ -7,11 +7,12 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 
 import connectDB from './config/db.js';
-import './config/passport.js';
 
+import './config/passport.js';
+import categoryRoutes from './routes/categoryRoutes.js'
 import blogRoutes from './routes/blogRoutes.js';
 import authRoutes from './routes/authRoutes.js';
-import categoryRoutes from './routes/categoryRoutes.js';
+
 import tokenRoutes from './routes/tokenRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
@@ -44,7 +45,7 @@ app.use(passport.session());
 app.use('/api/blogs', blogRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/auth', tokenRoutes);
-app.use('/api/categories', categoryRoutes);
+app.use('/api/categories',categoryRoutes);
 app.use('/api/users', userRoutes)
 
 
