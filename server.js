@@ -25,6 +25,7 @@ connectDB();
 const allowedOrigins = [
   process.env.CLIENT_URL_1,
   process.env.CLIENT_URL_2,
+  'http://localhost:5173', 
 ];
 
 
@@ -36,20 +37,22 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true,
 }));
-
 
 app.use(express.json());
 app.use(cookieParser());
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -59,6 +62,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/auth', tokenRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
+
 
 app.get('/', (_req, res) => {
   res.send('API is running');
