@@ -74,8 +74,7 @@ router.get('/:id', getBlogById);
 router.get('/:id/comments', getComments); 
 router.post('/:id/comments', authenticate, addComment); 
 router.put('/:id/comments/:commentId', authenticate, updateComment); 
-router.put("/blogs/:id", verifyAccessToken, updateBlog);
-router.delete("/blogs/:id", verifyAccessToken, deleteBlog);
-
+router.put("/:id", authenticate, updateBlog);
+router.delete("/:id", authenticate, deleteBlog);
 
 export default router;
