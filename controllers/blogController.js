@@ -204,3 +204,47 @@ export const updateComment = async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 };
+
+
+export const deleteBlog = async (req, res) => {
+  const blogId = req.params.id;
+  const userId = req.user.id;
+
+  try {
+    const blog = await Blog.findById(blogId);
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+    if (blog.author.toString() !== userId)
+      return res.status(403).json({ message: "Unauthorized" });
+
+    await blog.deleteOne();
+    res.status(200).json({ message: "Blog deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const updateBlog = async (req, res) => {
+  const blogId = req.params.id;
+  const userId = req.user.id;
+
+  try {
+    const blog = await Blog.findById(blogId);
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+    if (blog.author.toString() !== userId)
+      return res.status(403).json({ message: "Unauthorized" });
+
+    const { title, description, category, image } = req.body;
+
+    blog.title = title || blog.title;
+    blog.description = description || blog.description;
+    blog.category = category || blog.category;
+    blog.image = image || blog.image;
+
+    await blog.save();
+    res.status(200).json(blog);
+  } catch (err) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};

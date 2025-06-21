@@ -10,6 +10,8 @@ import {
   getBlogById,
   getBlogsByUser,
   getBlogsByCategorySlug,
+  deleteBlog,
+  updateBlog,
 } from '../controllers/blogController.js';
 import authenticate from '../middleware/authenticate.js';
 
@@ -72,5 +74,8 @@ router.get('/:id', getBlogById);
 router.get('/:id/comments', getComments); 
 router.post('/:id/comments', authenticate, addComment); 
 router.put('/:id/comments/:commentId', authenticate, updateComment); 
+router.put("/blogs/:id", verifyAccessToken, updateBlog);
+router.delete("/blogs/:id", verifyAccessToken, deleteBlog);
+
 
 export default router;
