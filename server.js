@@ -74,7 +74,6 @@
 //   console.log(`🚀 Server running on port ${PORT}`);
 // });
 
-
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -93,29 +92,27 @@ import tokenRoutes from "./routes/tokenRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
+
 const app = express();
 
-/* DB */
+
 connectDB();
 
-/* ✅ CORS — SIMPLE & WORKING */
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://blogsite-frontend-mauve.vercel.app"
-    ],
+    origin: "https://blogsite-frontend-mauve.vercel.app",
     credentials: true,
   })
 );
 
+
 app.use(express.json());
 app.use(cookieParser());
 
-/* Static uploads */
+
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
-/* Session */
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "secret",
@@ -127,17 +124,18 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* Routes */
+
 app.use("/api/blogs", blogRoutes);
+app.use("/api/categories", categoryRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/auth", tokenRoutes);
-app.use("/api/categories", categoryRoutes);
 app.use("/api/users", userRoutes);
 
-/* Test route */
+
 app.get("/api/test", (_req, res) => {
-  res.json({ message: "Backend + CORS working" });
+  res.json({ message: "Backend + CORS working ✅" });
 });
 
 
 export default app;
+
